@@ -2,6 +2,7 @@
 A game rules engine for card-based games written in Java
 
 README/DOCUMENTATION A WORK IN PROGRESS
+
 Table of Contents:
   1. Summary
   2. Engine Features/Design choices
