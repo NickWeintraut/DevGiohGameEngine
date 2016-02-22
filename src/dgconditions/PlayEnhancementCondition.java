@@ -36,28 +36,18 @@ public class PlayEnhancementCondition extends Condition {
 	@Override
 	protected boolean checkCondition() {
 		
-		List<CreatureCard> creaturesToCheck = new LinkedList<CreatureCard>();
-		List<DGPlayer> dgPlayers = new LinkedList<DGPlayer>();
-		//add all players to a linkedlist (does this need to be done? Why not just use list from PlayerOrder)
+		enhanceables.clear();
 		for(Player player : Engine.getCurrentGame().getPlayerOrder().getPlayers())
 		{
-			dgPlayers.add((DGPlayer) player);
+			//so much casting, should convert design to utilize generics
+			for(CreatureCard creature : ((DGPlayer) player).getField().getCreatureCards())
+			{
+				if(creature instanceof Enhanceable && creature.canBeEnhanced())
+					enhanceables.add(creature);
+			}
 		}
-		//add all creature cards from each field to a list of creatures to check
-		for(DGPlayer dgPlayer : dgPlayers)
-		{
-			creaturesToCheck.addAll(dgPlayer.getField().getCreatureCards());
-		}
-		//add all creatures that are enhanceable and can currently be enhanced
-		List<CreatureCard> validCreatures = new LinkedList<CreatureCard>();
-		for(CreatureCard creature : creaturesToCheck)
-		{
-			if(creature instanceof Enhanceable && creature.canBeEnhanced())
-				validCreatures.add(creature);
-		}
-		//clear current enhanceables and add the current list
-		enhanceables.clear();
-		enhanceables.addAll(validCreatures);
+
+		//returns true if there are no enhanceables
 		if(enhanceables.isEmpty())
 			return false;
 		else
