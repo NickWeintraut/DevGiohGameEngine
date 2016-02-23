@@ -184,32 +184,35 @@ public class DGGameView extends JFrame implements GameOutputable{
 			{
 				panel.setSelectable(true);
 			}
-			while(!request.hasAnswer())
-			{
-				while(!confirmPanel.isConfirmed())
+			Thread b = new Thread();
+			synchronized(b) {
+				while(!request.hasAnswer())
 				{
-					try {
-						wait(1000);
-						} catch (Exception e)
-						{
-							
-						}
-				}
-				List<CreatureCard> creatures = new LinkedList<CreatureCard>();
-				for(CardPanel panel: creaturePanels)
-				{
-					if(panel.isSelected())
+					while(!confirmPanel.isConfirmed())
 					{
-						creatures.add((CreatureCard) panel.getCard());
+						try {
+							b.wait(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-				}
-				try
-				{
-					request.setCreatures(creatures);
-				} catch(InvalidSelectionException e)
-				{
-					confirmPanel.setText("Invalid Selection: " + request.getMessage());
-					confirmPanel.activate();
+					List<CreatureCard> creatures = new LinkedList<CreatureCard>();
+					for(CardPanel panel: creaturePanels)
+					{
+						if(panel.isSelected())
+						{
+							creatures.add((CreatureCard) panel.getCard());
+						}
+					}
+					try
+					{
+						request.setCreatures(creatures);
+					} catch(InvalidSelectionException e)
+					{
+						confirmPanel.setText("Invalid Selection: " + request.getMessage());
+						confirmPanel.activate();
+					}
 				}
 			}
 		}
@@ -221,32 +224,36 @@ public class DGGameView extends JFrame implements GameOutputable{
 			{
 				panel.setSelectable(true);
 			}
-			while(!request.hasAnswer())
+			Thread b = new Thread();
+			synchronized (b)
 			{
-				while(!confirmPanel.isConfirmed())
+				while(!request.hasAnswer())
 				{
-					try {
-						wait(1000);
-						} catch (Exception e)
-						{
-							
-						}
-				}
-				List<Player> players = new LinkedList<Player>();
-				for(PlayerSelectionPanel panel: playerPanels)
-				{
-					if(panel.isSelected())
+					while(!confirmPanel.isConfirmed())
 					{
-						players.add((Player) panel.getReference());
+						try {
+							b.wait(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-				}
-				try
-				{
-					request.setSelectedPlayers(players);
-				} catch(InvalidSelectionException e)
-				{
-					confirmPanel.setText("Invalid Selection: " + request.getMessage());
-					confirmPanel.activate();
+					List<Player> players = new LinkedList<Player>();
+					for(PlayerSelectionPanel panel: playerPanels)
+					{
+						if(panel.isSelected())
+						{
+							players.add((Player) panel.getReference());
+						}
+					}
+					try
+					{
+						request.setSelectedPlayers(players);
+					} catch(InvalidSelectionException e)
+					{
+						confirmPanel.setText("Invalid Selection: " + request.getMessage());
+						confirmPanel.activate();
+					}
 				}
 			}
 			
@@ -264,38 +271,42 @@ public class DGGameView extends JFrame implements GameOutputable{
 				//System.out.println("Selectable!");
 				panel.setSelectable(true);
 			}
-			while(!request.hasAnswer())
-			{
-				while(!confirmPanel.isConfirmed())
+			Thread b = new Thread();
+			synchronized(b) {
+				while(!request.hasAnswer())
 				{
-					try {
-						wait(1000);
-						} catch (Exception e)
-						{
-						}
-				}
-			//System.out.println(confirmPanel.isConfirmed());
-				List<Card> cards = new LinkedList<Card>();
-				for(CardPanel panel: cardPanels)
-				{
-					if(panel.isSelected())
+					while(!confirmPanel.isConfirmed())
 					{
-						//System.out.println("Hellooooo");
-						//System.out.println(panel.getCard().getName());
-						cards.add((Card) panel.getCard());
+						try {
+							b.wait(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-				}
-				try
-				{
-					//System.out.println("Selected Cards");
-					//System.out.println(cards);
-					//System.out.println("Possible Cards");
-					//System.out.println(request.getPossibleCards());
-					request.setSelectedCards(cards);
-				} catch(InvalidSelectionException e)
-				{
-					confirmPanel.setText("Invalid Selection: " + request.getMessage());
-					confirmPanel.activate();
+				//System.out.println(confirmPanel.isConfirmed());
+					List<Card> cards = new LinkedList<Card>();
+					for(CardPanel panel: cardPanels)
+					{
+						if(panel.isSelected())
+						{
+							//System.out.println("Hellooooo");
+							//System.out.println(panel.getCard().getName());
+							cards.add((Card) panel.getCard());
+						}
+					}
+					try
+					{
+						//System.out.println("Selected Cards");
+						//System.out.println(cards);
+						//System.out.println("Possible Cards");
+						//System.out.println(request.getPossibleCards());
+						request.setSelectedCards(cards);
+					} catch(InvalidSelectionException e)
+					{
+						confirmPanel.setText("Invalid Selection: " + request.getMessage());
+						confirmPanel.activate();
+					}
 				}
 			}
 		}
@@ -303,18 +314,21 @@ public class DGGameView extends JFrame implements GameOutputable{
 		{
 			confirmPanel.getBoolPanel().activate();
 			BooleanInputRequest request = (BooleanInputRequest) i;
-			while(!request.hasAnswer())
-			{
-				while(!confirmPanel.isConfirmed())
+			Thread b = new Thread();
+			synchronized(b) {
+				while(!request.hasAnswer())
 				{
-					try {
-						wait(1000);
-						} catch (Exception e)
-						{
-							
+					while(!confirmPanel.isConfirmed())
+					{
+						try {
+							b.wait(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
+					}
+					request.setAnswer(confirmPanel.getBoolPanel().getAnswer());
 				}
-				request.setAnswer(confirmPanel.getBoolPanel().getAnswer());
 			}
 			confirmPanel.getBoolPanel().deactivate();
 		}

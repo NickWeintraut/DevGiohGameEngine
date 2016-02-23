@@ -20,21 +20,17 @@ public class Driver {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
 		SerializationTest.main(args);
 		
 		MenuGUI gui = new MenuGUI();
-		
-		while(gui.getDeckLists() == null)
-		{
-			try
+		Thread b = new Thread();
+		synchronized(b) {
+			while(gui.getDeckLists() == null)
 			{
-				Object object = new Object();
-				object.wait(1000);
-			} catch(Exception e)
-			{
-				
+
+					b.wait(1000);
 			}
 		}
 		
