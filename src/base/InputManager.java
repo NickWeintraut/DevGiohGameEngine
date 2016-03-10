@@ -19,6 +19,17 @@ public class InputManager {
 	public InputRequest ask(InputRequest request)
 	{
 		responder.takeInputRequest(request);
+		Thread b = new Thread();
+		synchronized (b) {
+			while(!request.hasAnswer())
+			{
+				try {
+					b.wait(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return request;
 	}
 
