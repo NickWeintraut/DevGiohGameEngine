@@ -126,11 +126,12 @@ public abstract class Game extends UpdaterGameObject implements Updatable{
 	
 	public GameState generateGameState()
 	{
+		//checks if first time creating gameState
 		if(currentState == null)
 		{
 			currentState = gameStateGenerator.generateGameState(this, true);
 		}
-		if(currentState.getUpdateID() != Engine.getCurrentTopUpdateID())
+		else if(currentState.getUpdateID() != Engine.getCurrentTopUpdateID())
 		{
 			//System.out.println("makin new gamestate");
 			currentState = gameStateGenerator.generateGameState(this);
