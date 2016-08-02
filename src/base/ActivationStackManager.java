@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/*
+/**
  * StackManager has protocols for iterating through activatable instructions that allow simultaneous changes to be made in the same update tick
  * and abilities to chain before gameplay progresses.
  */
@@ -12,7 +12,8 @@ public class ActivationStackManager extends UpdaterGameObject {
 
 	static final long serialVersionUID = 612;
 	
-	private InputManager input;
+	
+	//private InputManager input; //Not currently making use of an InputManager
 
 	private boolean isRunning;
 
@@ -20,19 +21,26 @@ public class ActivationStackManager extends UpdaterGameObject {
 	//important for triggeredEffects that trigger during phase actions and not state changes
 	private boolean isTopUpdate;
 
-	private List<ActivatableInstructions> passList;
+	private List<ActivatableInstructions> passList; //List of instructions that want to operate before state changes are recorded
 
-	private LinkedList<ActivatableInstructions> yieldList;
+	private LinkedList<ActivatableInstructions> yieldList; //List of instructions which wait until state changes from the last effect are recorded
 
+	/**
+	 * Constructs an ActivationStackmanager that is currently not running and at the topUpdate
+	 */
 	public ActivationStackManager() {
 		super();
-		this.input = Engine.getCurrentInputManager();
+		//this.input = Engine.getCurrentInputManager();
 		isRunning = false;
 		passList = new LinkedList<ActivatableInstructions>();
 		yieldList = new LinkedList<ActivatableInstructions>();
 		isTopUpdate = true;
 	}
 	
+	/**
+	 * Do we have any activatables available for operation?
+	 * @return True if either passList or yieldList have elements
+	 */
 	public boolean hasActivatables()
 	{
 		if(passList.size() == 0 && yieldList.size() == 0)
@@ -55,6 +63,11 @@ public class ActivationStackManager extends UpdaterGameObject {
 	}
 	*/
 	
+	/**
+	 * Checks if a given list has Activatables
+	 * @param priority Priority.YIELD or Priority.PASS
+	 * @return True if the corresponding list has Activatables, False if empty
+	 */
 	public boolean hasActivatables(Priority priority)
 	{
 		switch(priority)
@@ -76,21 +89,36 @@ public class ActivationStackManager extends UpdaterGameObject {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return True if currently iterating through stack instructions
+	 */
 	public boolean getIsRunning()
 	{
 		return isRunning;
 	}
 	
+	/**
+	 * 
+	 * @return ActivatableInstruction at beginning of yield list
+	 */
 	public ActivatableInstructions getTopYieldInstruction()
 	{
 		return yieldList.removeFirst();
 	}
 	
+	/**
+	 * 
+	 * @return True if this update is the top of an update chain
+	 */
 	public boolean isTopUpdate()
 	{
 		return isTopUpdate;
 	}
 	
+	/**
+	 * Iterate through ActivatableInstructions according to priority and update game state
+	 */
 	public void runStack()
 	{
 		//beginning
@@ -130,6 +158,13 @@ public class ActivationStackManager extends UpdaterGameObject {
 		isRunning = false;
 	}
 	
+	/**
+	 * Add an activatable to one of the instruction lists
+	 * @param activatable The activatable to add
+	 * @param priority The priority of this instruction
+	 * @param activate True if this instruction should activate the activatable, false if should deactivate
+	 * @param source The player this instruction is coming from
+	 */
 	public void receiveActivatable(Activatable activatable, Priority priority, boolean activate, Player source)
 	{
 		switch(priority)
