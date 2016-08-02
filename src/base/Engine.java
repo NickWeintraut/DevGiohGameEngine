@@ -42,6 +42,9 @@ abstract public class Engine {
 		else
 			return false;	
 	}
+	/*
+	 * It's late at night, but think - control swapping between games! how to do? games all wait for selection? or greedy games have priority until engine kicks them off?
+	 */
 	
 	static public void clearCurrentGameInstance()
 	{
