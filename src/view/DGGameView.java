@@ -176,6 +176,7 @@ public class DGGameView extends JFrame implements GameOutputable{
 		makeAllUnSelectable();
 		confirmPanel.setText(i.getOwner().getName() + "! " + i.getMessage());
 		confirmPanel.activate();
+
 		if(i instanceof CreatureSelectionRequest)
 		{
 			CreatureSelectionRequest request = (CreatureSelectionRequest) i;
@@ -191,7 +192,7 @@ public class DGGameView extends JFrame implements GameOutputable{
 					while(!confirmPanel.isConfirmed())
 					{
 						try {
-							b.wait(1000);
+							b.wait(250);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -232,7 +233,7 @@ public class DGGameView extends JFrame implements GameOutputable{
 					while(!confirmPanel.isConfirmed())
 					{
 						try {
-							b.wait(1000);
+							b.wait(250);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -278,7 +279,7 @@ public class DGGameView extends JFrame implements GameOutputable{
 					while(!confirmPanel.isConfirmed())
 					{
 						try {
-							b.wait(1000);
+							b.wait(250);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -321,7 +322,7 @@ public class DGGameView extends JFrame implements GameOutputable{
 					while(!confirmPanel.isConfirmed())
 					{
 						try {
-							b.wait(1000);
+							b.wait(250);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
