@@ -20,33 +20,34 @@ public class PlayEnhancementCondition extends Condition {
 		this.player = player;
 		this.enhanceables = new LinkedList<CreatureCard>();
 	}
-	
+	/**
+	 * Gets a list of all enhanceable creature cards this condition found
+	 * @return All creature cards that are legal for enhancement
+	 */
 	public List<CreatureCard> getEnhanceables()
 	{
 		return enhanceables;
 	}
 
+	/**
+	 * Checks if there are any creatures on the battlefield that can be enhanced
+	 * @return true if there are any currently enhanceable creatures, false if there are none
+	 */
 	@Override
 	protected boolean checkCondition() {
 		
-		List<CreatureCard> creaturesToCheck = new LinkedList<CreatureCard>();
-		List<DGPlayer> dgPlayers = new LinkedList<DGPlayer>();
+		enhanceables.clear();
 		for(Player player : Engine.getCurrentGame().getPlayerOrder().getPlayers())
 		{
-			dgPlayers.add((DGPlayer) player);
+			//so much casting, should convert design to utilize generics
+			for(CreatureCard creature : ((DGPlayer) player).getField().getCreatureCards())
+			{
+				if(creature instanceof Enhanceable && creature.canBeEnhanced())
+					enhanceables.add(creature);
+			}
 		}
-		for(DGPlayer dgPlayer : dgPlayers)
-		{
-			creaturesToCheck.addAll(dgPlayer.getField().getCreatureCards());
-		}
-		List<CreatureCard> validCreatures = new LinkedList<CreatureCard>();
-		for(CreatureCard creature : creaturesToCheck)
-		{
-			if(creature instanceof Enhanceable && creature.canBeEnhanced())
-				validCreatures.add(creature);
-		}
-		enhanceables.clear();
-		enhanceables.addAll(validCreatures);
+
+		//returns true if there are no enhanceables
 		if(enhanceables.isEmpty())
 			return false;
 		else
